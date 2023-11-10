@@ -6,13 +6,13 @@ export const hydrateAppWithData = (skills, labels) => {
   )
   const top_level_skills = Array.from(
     new Set( // Remove duplicates
-      skills.map(skill => skill.split('/')[0]) // Keep only the prefix
+      skills.map((skill) => skill.split('/')[0]) // Keep only the prefix
     )
   )
 
   const categories = {}
-  labels.groups.forEach(group => {
-    group.labels.forEach(label => {
+  labels.groups.forEach((group) => {
+    group.labels.forEach((label) => {
       let name = label.name
       if (group.is_prefixed !== false) {
         name = `${group.name}: ${name}`
@@ -20,7 +20,7 @@ export const hydrateAppWithData = (skills, labels) => {
       if (label.has_emoji_name !== false) {
         name = `${label.emoji} ${name}`
       }
-      let styleName = label.color;
+      let styleName = label.color
       if (/^[A-Z]+$/.test(styleName)) {
         styleName = `${group.name}-${styleName.toLocaleLowerCase()}`
       } else {
@@ -29,12 +29,12 @@ export const hydrateAppWithData = (skills, labels) => {
       categories[name] = styleName
     })
   })
-  labels.standalone.forEach(label => {
-    let name = `${label.emoji} ${label.name}`
+  labels.standalone.forEach((label) => {
+    const name = `${label.emoji} ${label.name}`
     categories[name] = 'miscellaneous'
   })
-  skills.forEach(skill => {
-    let name = `💪 skill: ${skill.toLocaleLowerCase()}`
+  skills.forEach((skill) => {
+    const name = `💪 skill: ${skill.toLocaleLowerCase()}`
     categories[name] = 'skill'
   })
 

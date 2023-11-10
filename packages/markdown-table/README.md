@@ -9,4 +9,5 @@ This plugin adds styling to markdown tables, by adding bootstrap classes. Stylin
 table = 'table table-striped'
 thead = 'thead-dark'
 ```
+
 Unless specified, the default styles `table table-striped` and `thead-dark` are applied.

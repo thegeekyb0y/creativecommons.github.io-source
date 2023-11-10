@@ -2,10 +2,9 @@
 
 Source for `creativecommons.github.io`
 
-
 ## Overview
 
-> **:warning: DO *NOT* MAKE CHANGES TO THE
+> **:warning: DO _NOT_ MAKE CHANGES TO THE
 > [creativecommons/creativecommons.github.io][ccghiorepo] REPO DIRECTLY**.
 
 [ccghiorepo]: https://github.com/creativecommons/creativecommons.github.io
@@ -19,10 +18,10 @@ via lektor (see [Deployment](#deployment), below).
 [ccgithubio]: https://creativecommons.github.io/
 [ccopensource]: https://opensource.creativecommons.org/
 
-
 ## Code of Conduct
 
 [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md):
+
 > The Creative Commons team is committed to fostering a welcoming community.
 > This project and all other Creative Commons open source projects are governed
 > by our [Code of Conduct][code_of_conduct]. Please report unacceptable
@@ -31,7 +30,6 @@ via lektor (see [Deployment](#deployment), below).
 
 [code_of_conduct]: https://opensource.creativecommons.org/community/code-of-conduct/ "CC Open Source Code of Conduct — Creative Commons on GitHub"
 [reporting_guide]: https://opensource.creativecommons.org/community/code-of-conduct/enforcement/ "Codes of Conduct Enforcement — Creative Commons on GitHub"
-
 
 ## Contributing
 
@@ -42,34 +40,35 @@ via lektor (see [Deployment](#deployment), below).
 
 [contributors]: https://github.com/creativecommons/creativecommons.github.io-source/graphs/contributors "Contributors to creativecommons/creativecommons.github.io-source"
 
-
 ## Installation
 
 ### Prerequisites
 
 Make sure you have:
+
 - [pipenv][pipenvdocs]
 - [Node.js][nodejswebsite] **v12+** and [npm][npmdocs] installed.
 
 To install these, execute the following commands:
+
 - macOS:
   1. Install [Homebrew][homebrew]
   1. Install pipenv and node:
-        ```
-        brew install pipenv node
-        ```
+     ```
+     brew install pipenv node
+     ```
 - GNU/Linux:
   1. [Installing Pipenv][pipenvinstall]
   2. [Install Node.js][nodeinstall] (or see the
      [detailed instructions][nodedetailed])
   3. Upate packges:
-        ```
-        sudo apt update
-        ```
+     ```
+     sudo apt update
+     ```
   4. Install npm:
-        ```
-        sudo apt install npm
-        ```
+     ```
+     sudo apt install npm
+     ```
 
 [pipenvdocs]: https://pipenv.pypa.io/en/latest/
 [nodejswebsite]: https://nodejs.org/en/
@@ -79,7 +78,6 @@ To install these, execute the following commands:
 [nodeinstall]: https://github.com/nodesource/distributions/blob/master/README.md#table-of-contents
 [nodedetailed]: https://github.com/nodesource/distributions/blob/master/README.md#installation-instructions
 
-
 ### Installing Project Requirements
 
 1. Clone this repository.
@@ -87,45 +85,43 @@ To install these, execute the following commands:
    directory.
 3. Create a Python virtual environment and install the requirements for this
    project:
-    ```
-    pipenv install --dev
-    ```
-
+   ```
+   pipenv install --dev
+   ```
 
 ### pipenv Troubleshooting
 
 `pipenv` doesn't always provide the best error messages ([Provide better error
 message if the project’s virtual environment is broken][pipenverror]). If all
 else fails, try removing the virtual environment and reinstalling:
+
 1. Remove virtual environment:
-    ```
-    pipenv --rm
-    ```
+   ```
+   pipenv --rm
+   ```
 2. Install virtual environment (including dev packages):
-    ```
-    pipenv install --dev
-    ```
+   ```
+   pipenv install --dev
+   ```
 
 [pipenverror]: https://github.com/pypa/pipenv/issues/1918
-
 
 ## Development
 
 - Start the Lektor development server:
-    ```
-    pipenv run lektor server -f webpack
-    ```
+  ```
+  pipenv run lektor server -f webpack
+  ```
 - You will be able to see the website at [`127.0.0.1:5000/`][local5000].
   - The Lektor server will rebuild the site every time you change any content.
 
 [local5000]: http://127.0.0.1:5000/
 
-
 ### Troubleshooting Possible Errors
 
 - Should you get series of type errors that looks something like `npm ERR!
-  typeerror Error: Missing required argument #1`, after running `pipenv run
-  lektor server -f webpack`, this is most likely due to running an older
+typeerror Error: Missing required argument #1`, after running `pipenv run
+lektor server -f webpack`, this is most likely due to running an older
   version of Node.js.
 
   As stated above in [Prerequisites](#prerequisites), you should be running
@@ -137,18 +133,18 @@ else fails, try removing the virtual environment and reinstalling:
   files.
 
   The solution is to run:
-    ```
-    sudo sysctl fs.inotify.max_user_watches=524288
-    ```
+
+  ```
+  sudo sysctl fs.inotify.max_user_watches=524288
+  ```
 
   This increases your `inotify` watch limit (for the session) to 524288, which
-  is the maximum value and is also enough to allow the  setup go through. You
+  is the maximum value and is also enough to allow the setup go through. You
   can learn more about file watchers [from this blog post][inotifyblog]
   or [from the VS Code documentation][watchchanges].
 
 [inotifyblog]: https://unixia.wordpress.com/2018/04/28/inotify-watch-limit-reached-wait-what/
 [watchchanges]: https://code.visualstudio.com/docs/setup/linux#_visual-studio-code-is-unable-to-watch-for-file-changes-in-this-large-workspace-error-enospc
-
 
 ## Deployment
 
@@ -162,7 +158,6 @@ The GitHub Actions configuration is located at
 
 [lektorbuild]: .github/workflows/lektor-build-deploy.yml
 
-
 ### Manual Deployment
 
 > :warning: **For reference only, you should not need to not do this.**
@@ -172,10 +167,10 @@ When you are ready to deploy a new version of the site, run `lektor deploy`
 the [creativecommons/creativecommons.github.io][ccghiorepo] repository). That's
 it, it's live on production!
 
-
 ## Project Structure
 
 Here's how the code is structured in the top level of the repository:
+
 - **`assets`**: This directory contains the JavaScript and CSS files for the
   project built via webpack. Most of the JavaScript and CSS is third-party code
   and loaded via CDN so this is pretty empty.
@@ -196,7 +191,6 @@ Here's how the code is structured in the top level of the repository:
 [lektormodels]: https://www.getlektor.com/docs/models/
 [jinja2]: http://jinja.pocoo.org/
 [lektortemplate]: https://www.getlektor.com/docs/templates/
-
 
 ### Lektor Plugins
 
@@ -227,7 +221,6 @@ Here's how the code is structured in the top level of the repository:
 [striphtml]: https://github.com/terminal-labs/lektor-strip-html-tags
 [webpacksupport]: https://github.com/lektor/lektor-webpack-support
 
-
 ## Redirects
 
 - `/cc-vocabulary/` to https://cc-vocabulary.netlify.com/
@@ -240,10 +233,10 @@ Here's how the code is structured in the top level of the repository:
   - Added so that the `opensource.creativecommons.org/cc-fonts/` will
     continue to work with that project moving to utilize Netlify.
 
-
 ## External Data
 
 The following load external data:
+
 - [`webpack/js/components.js`](webpack/js/components.js)
   - [`creativecommons/ccos-scripts/main/ccos/norm/labels.yml`][labels-yml]
   - [`creativecommons/ccos-scripts/main/ccos/norm/skills.yml`][skills-yml]
@@ -255,16 +248,13 @@ The following load external data:
 [gh-creativecommons]: https://github.com/creativecommons/
 [octokit]: https://www.npmjs.com/package/octokit
 
-
 ## License
-
 
 ### Code
 
 - [`LICENSE`](LICENSE) (Expat/[MIT][mit] License)
 
 [mit]: http://www.opensource.org/licenses/MIT "The MIT License | Open Source Initiative"
-
 
 ### Content
 
@@ -276,7 +266,6 @@ specified.
 
 [cc-by-png]: https://licensebuttons.net/l/by/4.0/88x31.png "CC BY 4.0 license button"
 [cc-by]: https://creativecommons.org/licenses/by/4.0/ "Creative Commons — Attribution-ShareAlike 4.0 International — CC BY 4.0"
-
 
 ### Font Awesome
 

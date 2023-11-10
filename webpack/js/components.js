@@ -1,15 +1,15 @@
-import VueSelect from 'vue-select';
-import {Octokit} from '@octokit/rest';
+import VueSelect from 'vue-select'
+import { Octokit } from '@octokit/rest'
 import yaml from 'js-yaml'
 
-import {hydrateAppWithData} from "./hydration";
+import { hydrateAppWithData } from './hydration'
 
 export const IssueLabel = {
   template: `
 <span class="gh-label" :class="className">
   {{ name }}
 </span>`,
-  data() {
+  data () {
     return {
       labels: window.labels
     }
@@ -28,8 +28,11 @@ export const IssueLabel = {
      *
      * @returns {string} the name of the class to apply to the label
      */
-    className() {
-      return this.$root.categories[this.name] || `${this.name.toLocaleLowerCase()} miscellaneous`
+    className () {
+      return (
+        this.$root.categories[this.name] ||
+        `${this.name.toLocaleLowerCase()} miscellaneous`
+      )
     }
   }
 }
@@ -68,11 +71,11 @@ export const IssueCard = {
     issue: {
       type: Object,
       required: true
-    },
+    }
   },
   computed: {
-    dateCreated() {
-      const [dateComponent,] = this.issue.created_at.split("T")
+    dateCreated () {
+      const [dateComponent] = this.issue.created_at.split('T')
       return dateComponent
     }
   }
@@ -157,18 +160,18 @@ export const App = {
     VueSelect,
     IssueCard
   },
-  data() {
+  data () {
     return {
       options: {
         aims: [
-          {name: 'Contributing code', code: 'contribute'},
-          {name: 'Triaging issues', code: 'triage'},
-          {name: 'Labelling issues', code: 'label'}
+          { name: 'Contributing code', code: 'contribute' },
+          { name: 'Triaging issues', code: 'triage' },
+          { name: 'Labelling issues', code: 'label' }
         ],
         skills: [],
         experiences: [
-          {name: 'Yes, it is', code: 'beginner'},
-          {name: 'No, it isn\'t', code: 'experienced'}
+          { name: 'Yes, it is', code: 'beginner' },
+          { name: "No, it isn't", code: 'experienced' }
         ]
       },
       filters: {
@@ -187,23 +190,31 @@ export const App = {
      *
      * @returns {array} the array of filtered issues
      */
-    filteredIssues() {
-      return this.issues.filter(issue => {
-        // If aim is to triage issues
-        if (this.filters.aim === 'triage' || this.filters.aim === 'label') {
-          // Show all issues as they all have the label "🚦 status: awaiting triage"
-          return true
-        }
+    filteredIssues () {
+      return this.issues
+        .filter((issue) => {
+          // If aim is to triage issues
+          if (this.filters.aim === 'triage' || this.filters.aim === 'label') {
+            // Show all issues as they all have the label "🚦 status: awaiting triage"
+            return true
+          }
 
-        // Check experience match
-        if (this.filters.experience === 'beginner' && !issue.labels.includes('good first issue')) {
-          return false
-        }
+          // Check experience match
+          if (
+            this.filters.experience === 'beginner' &&
+            !issue.labels.includes('good first issue')
+          ) {
+            return false
+          }
 
-        // Check skill set match
-        const joinedLabels = issue.labels.join(',')
-        return !(this.filters.skills.length && !this.filters.skills.some(skill => joinedLabels.includes(skill)));
-      }).sort((a, b) => b.createdAt - a.createdAt)
+          // Check skill set match
+          const joinedLabels = issue.labels.join(',')
+          return !(
+            this.filters.skills.length &&
+            !this.filters.skills.some((skill) => joinedLabels.includes(skill))
+          )
+        })
+        .sort((a, b) => b.createdAt - a.createdAt)
     }
   },
   watch: {
@@ -223,43 +234,46 @@ export const App = {
       } else if (this.filters.aim === 'label') {
         q.push('label:"🏷 status: label work required"')
       }
-      this.octokit.search.issuesAndPullRequests({
-        q: q.join(' '),
-        per_page: 100,
-        sort: 'created',
-        order: 'desc'
-      }).then(res => {
-        this.issues = res.data.items
-        this.issues.forEach(issue => {
-          issue.labels = issue.labels.map(label => label.name)
-
-          const repoUrl = issue.repository_url
-          issue.repo = repoUrl.slice(repoUrl.lastIndexOf('/') + 1)
+      this.octokit.search
+        .issuesAndPullRequests({
+          q: q.join(' '),
+          per_page: 100,
+          sort: 'created',
+          order: 'desc'
         })
-      })
+        .then((res) => {
+          this.issues = res.data.items
+          this.issues.forEach((issue) => {
+            issue.labels = issue.labels.map((label) => label.name)
+
+            const repoUrl = issue.repository_url
+            issue.repo = repoUrl.slice(repoUrl.lastIndexOf('/') + 1)
+          })
+        })
     }
   },
-  mounted() {
-    const BASE_URL = 'https://raw.githubusercontent.com/creativecommons/ccos-scripts/main/ccos/norm'
-    const FILE_URL = name => `${BASE_URL}/${name}.yml`
+  mounted () {
+    const BASE_URL =
+      'https://raw.githubusercontent.com/creativecommons/ccos-scripts/main/ccos/norm'
+    const FILE_URL = (name) => `${BASE_URL}/${name}.yml`
 
     this.octokit = new Octokit()
     this.loadIssues()
 
-    Promise
-        .all([
-          fetch(FILE_URL('skills'))
-              .then(response => response.text()),
-          fetch(FILE_URL('labels'))
-              .then(response => response.text())
-        ])
-        .then(([skillResponse, labelResponse]) => {
-          skillResponse = yaml.safeLoad(skillResponse)
-          labelResponse = yaml.safeLoad(labelResponse)
-          const [skills, categories] = hydrateAppWithData(skillResponse, labelResponse)
-          this.categories = categories
-          this.options.skills = skills
-        })
-        .catch(err => console.error(err))
+    Promise.all([
+      fetch(FILE_URL('skills')).then((response) => response.text()),
+      fetch(FILE_URL('labels')).then((response) => response.text())
+    ])
+      .then(([skillResponse, labelResponse]) => {
+        skillResponse = yaml.safeLoad(skillResponse)
+        labelResponse = yaml.safeLoad(labelResponse)
+        const [skills, categories] = hydrateAppWithData(
+          skillResponse,
+          labelResponse
+        )
+        this.categories = categories
+        this.options.skills = skills
+      })
+      .catch((err) => console.error(err))
   }
 }
